@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login to Email Extractor</title>
+</head>
+<body>
+    <div class="login-container">
+        <h1>Welcome to Email Extractor</h1>
+        <p>Please log in to continue.</p>
+        <button onclick="redirectToCognito()">Login with Cognito</button>
+    </div>
+
+    <script>
+        function redirectToCognito() {
+            const cognitoLoginUrl = "https://eu-north-10rvzj1ihy.auth.eu-north-1.amazoncognito.com/login?client_id=5fcr7dv1uh32605rplco6ot78k&response_type=code&scope=email+openid+phone&redirect_uri=https%3A%2F%2Femailextractorbucket.s3.eu-north-1.amazonaws.com%2Findex.html";
+            window.location.href = cognitoLoginUrl;
+        }
+    </script>
+</body>
+</html>
