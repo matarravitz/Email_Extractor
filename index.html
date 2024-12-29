@@ -87,32 +87,27 @@
 </head>
 <body>
     <script>
-        // פונקציה לקבלת עוגייה לפי שם
         function getCookie(name) {
             const value = `; ${document.cookie}`;
             const parts = value.split(`; ${name}=`);
             if (parts.length === 2) return parts.pop().split(';').shift();
         }
 
-        // פונקציה לניקוי ה-URL
         function cleanUrl() {
             const currentUrl = new URL(window.location.href);
             currentUrl.searchParams.delete("code");
             window.history.replaceState({}, document.title, currentUrl.pathname);
         }
 
-        // בדיקת Access Token בעוגיות
         const accessToken = getCookie("accessToken");
         const urlParams = new URLSearchParams(window.location.search);
         const code = urlParams.get("code");
 
         if (!accessToken) {
             if (!code) {
-                // הפניה לעמוד ההתחברות של Cognito אם אין Access Token ואין Code
                 const cognitoLoginUrl = "https://eu-north-10rvzj1ihy.auth.eu-north-1.amazoncognito.com/login?client_id=5fcr7dv1uh32605rplco6ot78k&response_type=code&scope=email+openid+phone&redirect_uri=https%3A%2F%2Femailextractorbucket.s3.eu-north-1.amazonaws.com%2Findex.html";
                 window.location.href = cognitoLoginUrl;
             } else {
-                // חילוף הקוד ל-Tokens
                 fetch("https://eu-north-10rvzj1ihy.auth.eu-north-1.amazoncognito.com/oauth2/token", {
                     method: "POST",
                     headers: {
@@ -132,23 +127,15 @@
                     return response.json();
                 })
                 .then(data => {
-                    console.log("Access Token:", data.access_token);
-                    console.log("ID Token:", data.id_token);
-
-                    // שמירת Tokens בעוגיות
                     document.cookie = `accessToken=${data.access_token}; path=/; max-age=3600; secure; SameSite=Strict`;
                     document.cookie = `idToken=${data.id_token}; path=/; max-age=3600; secure; SameSite=Strict`;
 
-                    // ניקוי הקוד מה-URL
                     cleanUrl();
                 })
                 .catch(error => {
                     console.error("Error:", error);
                 });
             }
-        } else {
-            console.log("User is already authenticated. Access Token:", accessToken);
-            // לוגיקה להמשך עבודה עם ה-Token
         }
     </script>
     <header>
@@ -160,7 +147,6 @@
             <input type="text" id="domain" placeholder="Enter website URL">
             <button onclick="extractEmails()">Extract Emails</button>
             <div class="results" id="results">
-                <!-- Results will appear here -->
             </div>
         </div>
     </main>
