@@ -192,3 +192,6 @@ async def main(event, context) -> Dict[str, Any]:
 
 def lambda_handler(event, context) -> Dict[str, Any]:
     return asyncio.run(main(event, context))
+
+
+# Success :)
