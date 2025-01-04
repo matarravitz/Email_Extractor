@@ -172,7 +172,8 @@ async def main(event, context) -> Dict[str, Any]:
         results = [result for result in results if result]
         for result in results:
             valid_emails = valid_emails.union(result["emails"])
-        cache_emails(result)
+        if result:
+            cache_emails(result)
         urls_list = []
         for result in results:
             urls_list.extend(result["paths"])
