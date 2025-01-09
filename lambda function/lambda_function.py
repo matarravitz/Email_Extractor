@@ -212,11 +212,11 @@ async def main(event, context) -> Dict[str, Any]:
     The main function that using the controller if an error doesn't accuire and returning all extracted urls.
 
     Parameters:
-    event: Dictionary containing the submitted URL.
+    event: 
     context: 
 
     Returns:
-    Dict[str, Any]: Dictionary containing the extracted emails or an error message.
+    Dict[str, Any]: Dictionary containing the extracted emails from the given URL.
     """
     valid_emails = set()
     try:
@@ -236,13 +236,13 @@ async def main(event, context) -> Dict[str, Any]:
             tasks = [controller(found_url, session, dynamodb_response, 2) for found_url in urls]
             results: List = await asyncio.gather(*tasks)  # type: ignore
 
-        if results:
-            results.append(result)
+        #if results:
+        results.append(result)
         results = [result for result in results if result]
         for result in results:
             valid_emails = valid_emails.union(result["emails"])
-        if results:
-            cache_emails(results)
+        #if results:
+        cache_emails(results)
         urls_list = []
         for result in results:
             urls_list.extend(result["paths"])
