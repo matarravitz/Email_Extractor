@@ -260,7 +260,7 @@ async def main(event, context) -> Dict[str, Any]:
 
     return lambda_response(
         {"emails": list(valid_emails),
-         "urls": list(set(urls_list))}  # Returns a dictionary containing a list of emails in the body.
+         "urls": list(set(urls_list))})  # Returns a dictionary containing a list of emails in the body.
 
 
 def lambda_handler(event, context) -> Dict[str, Any]:
