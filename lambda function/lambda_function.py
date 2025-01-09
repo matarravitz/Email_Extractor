@@ -85,7 +85,7 @@ def url_extractor(url_response: str, url: str) -> Set[str]:
     return urls
 
 
-async def web_scanner(url: str, session: ClientSession, int: num_of_round) -> Dict[str, Set[str]]:
+async def web_scanner(url: str, session: ClientSession, num_of_round: int) -> Dict[str, Set[str]]:
     """
     An asynchronous function that extracts valid URL and email addresses from an HTML source.
 
@@ -163,7 +163,7 @@ def get_cache(urls: Set[str]) -> Dict: #TODO: need to be fixed!
     return results
 
 
-async def controller(url: str, session: ClientSession, response_dynamo, num_of_round) -> Dict:
+async def controller(url: str, session: ClientSession, response_dynamo, num_of_round: int) -> Dict:
     """
     Controls the scanning of email addresses and URLs for a given base URL.
     This function checks if the given URL is cached in the DynamoDB response. If cached, it retrieves the data
@@ -209,13 +209,14 @@ async def controller(url: str, session: ClientSession, response_dynamo, num_of_r
 
 async def main(event, context) -> Dict[str, Any]:
     """
-    Extracts all email addresses from a web page.
+    The main function that using the controller if an error doesn't accuire and returning all extracted urls.
 
     Parameters:
-    event (Dict): Dictionary containing the submitted URL.
+    event: Dictionary containing the submitted URL.
+    context: 
 
     Returns:
-    Dict: Dictionary containing the extracted emails or an error message.
+    Dict[str, Any]: Dictionary containing the extracted emails or an error message.
     """
     valid_emails = set()
     try:
