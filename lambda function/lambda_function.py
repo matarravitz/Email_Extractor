@@ -209,14 +209,19 @@ async def controller(url: str, session: ClientSession, response_dynamo, num_of_r
 
 async def main(event, context) -> Dict[str, Any]:
     """
-    The main function that using the controller if an error doesn't accuire and returning all extracted urls.
+    The main function that starting the URL scanning process, extracting emails from 
+    the provided domain and from the URL's in his source code. Also caches the results.
 
     Parameters:
-    event: 
-    context: 
+    event (Dict): Event object that contains query parameters, including the target domain URL.
+                  Expected format: {"queryStringParameters": {"domain": "<URL>"}}
+    context (Any): AWS Lambda context object providing runtime information about the invocation.
 
     Returns:
-    Dict[str, Any]: Dictionary containing the extracted emails from the given URL.
+    Dict[str, Any]: A dictionary containing the following keys:
+        - "emails": A list of extracted unique email addresses.
+        - "urls": A list of extracted unique URLs.
+        - OR an error response if any issues occur.
     """
     valid_emails = set()
     try:
@@ -234,7 +239,7 @@ async def main(event, context) -> Dict[str, Any]:
             urls = {found_url for found_url in result["paths"]}
             dynamodb_response = get_cache(urls)
             tasks = [controller(found_url, session, dynamodb_response, 2) for found_url in urls]
-            results: List = await asyncio.gather(*tasks)  # type: ignore
+            results: List = await asyncio.gather(*tasks)  # type: ignore  ####################################3
 
         #if results:
         results.append(result)
@@ -251,18 +256,13 @@ async def main(event, context) -> Dict[str, Any]:
     except Exception:
         e = traceback.format_exc()
         return lambda_response({'error': e}, 500)
-        #return lambda_response({"error": "An error occurred while trying to access the URL."}, 500)
         # If an error occurs, return a generic error message.
 
     return lambda_response(
         {"emails": list(valid_emails),
-         "urls": list(set(urls_list)),
-         "url_len": len(set(urls_list))})  # Returns a dictionary containing a list of emails in the body.
+         "urls": list(set(urls_list))  # Returns a dictionary containing a list of emails in the body.
 
 
 def lambda_handler(event, context) -> Dict[str, Any]:
     # Wrapper Function (lambda can't be asynchronous)
     return asyncio.run(main(event, context))
-
-
-# Success :)
