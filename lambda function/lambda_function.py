@@ -97,7 +97,7 @@ async def web_scanner(url: str, session: ClientSession, num_of_round: int) -> Di
         Dict[str, Set[str]]: A dictionary containing sets of unique and valid URLs and email addresses found.
     """
     urls = set()
-    async with session.get(url) as response: #########מרגיש כמו טעות###########################################
+    async with session.get(url) as response:
         response = await response.text()
     # get the source code.
     emails = email_extractor(response)
@@ -139,7 +139,7 @@ def cache_emails(scan_results: List[Dict]) -> None:
                 })
 
 
-def get_cache(urls: Set[str]) -> Dict: #TODO: need to be fixed! because caching only the main url now.
+def get_cache(urls: Set[str]) -> Dict:
     results = {}
     urls = list(urls)
     for i in range(0, len(urls), 100):
@@ -185,7 +185,7 @@ async def controller(url: str, session: ClientSession, response_dynamo, num_of_r
         if url not in response_dynamo:
             # If the URL is not found in the cache, perform a scan using the web_scanner function
             # and save the scanned data in the database.
-            result = await web_scanner(url, session, num_of_round) ##########why await
+            result = await web_scanner(url, session, num_of_round)
 
         else:
             # If the URL is already scanned and cached, retrieve the data from the cache.
@@ -228,7 +228,7 @@ async def main(event, context) -> Dict[str, Any]:
             return lambda_response({"error": "Invalid URL"}, 500)
         dynamodb_response = get_cache(set(url))
         timeout = ClientTimeout(10)
-        async with ClientSession(timeout=timeout) as session: ############
+        async with ClientSession(timeout=timeout) as session:
             try:
                 result = await controller(url, session, dynamodb_response, 1)
             except TimeoutError:
@@ -237,7 +237,7 @@ async def main(event, context) -> Dict[str, Any]:
             urls = {found_url for found_url in result["paths"]}
             dynamodb_response = get_cache(urls)
             tasks = [controller(found_url, session, dynamodb_response, 2) for found_url in urls]
-            results: List = await asyncio.gather(*tasks)  # type: ignore  ####################################3
+            results: List = await asyncio.gather(*tasks)  # type: ignore
 
         #if results:
         results.append(result)
