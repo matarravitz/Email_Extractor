@@ -5,85 +5,88 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Email Extractor</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #ffe6f0;
-            color: #333;
-            margin: 0;
-            padding: 0;
-        }
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f6f8;
+        color: #2c3e50;
+        margin: 0;
+        padding: 0;
+    }
 
-        header {
-            background-color: #ffccdd;
-            text-align: center;
-            padding: 20px;
-            border-bottom: 2px solid #ff99c8;
-        }
+    header {
+        background-color: #2c3e50;
+        text-align: center;
+        padding: 20px;
+        border-bottom: 3px solid #1abc9c;
+    }
 
-        header h1 {
-            margin: 0;
-            color: #333;
-        }
+    header h1 {
+        margin: 0;
+        color: #ffffff;
+        font-weight: 600;
+    }
 
-        main {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 80vh;
-        }
+    main {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 80vh;
+    }
 
-        .container {
-            background-color: #fff;
-            border-radius: 10px;
-            padding: 20px 30px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            max-width: 400px;
-            width: 100%;
-            text-align: center;
-        }
+    .container {
+        background-color: #ffffff;
+        border-radius: 8px;
+        padding: 25px 35px;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        max-width: 420px;
+        width: 100%;
+        text-align: center;
+    }
 
-        .container h2 {
-            color: #ff6699;
-        }
+    .container h2 {
+        color: #1abc9c;
+        margin-bottom: 15px;
+    }
 
-        .container input[type="text"] {
-            width: 90%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 1em;
-        }
+    .container input[type="text"] {
+        width: 90%;
+        padding: 10px;
+        margin: 10px 0;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 1em;
+    }
 
-        .container button {
-            background-color: #ff6699;
-            color: #fff;
-            border: none;
-            padding: 10px 20px;
-            margin-top: 10px;
-            border-radius: 5px;
-            font-size: 1em;
-            cursor: pointer;
-        }
+    .container button {
+        background-color: #1abc9c;
+        color: #fff;
+        border: none;
+        padding: 10px 22px;
+        margin-top: 10px;
+        border-radius: 5px;
+        font-size: 1em;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
 
-        .container button:hover {
-            background-color: #ff3366;
-        }
+    .container button:hover {
+        background-color: #16a085;
+    }
 
-        .results {
-            margin-top: 20px;
-            text-align: left;
-        }
+    .results {
+        margin-top: 20px;
+        text-align: left;
+    }
 
-        .results ul {
-            list-style: none;
-            padding: 0;
-        }
+    .results ul {
+        list-style: none;
+        padding: 0;
+    }
 
-        .results ul li {
-            padding: 5px 0;
-        }
-    </style>
+    .results ul li {
+        padding: 5px 0;
+    }
+</style>
 </head>
 <body>
     <script>
