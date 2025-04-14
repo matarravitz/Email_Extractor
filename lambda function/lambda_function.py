@@ -6,7 +6,6 @@ import json
 import time
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin, urlparse
-import traceback
 import asyncio
 from aiohttp import ClientSession, ClientTimeout
 
@@ -21,7 +20,7 @@ def lambda_response(response_dict: Dict, status_code: int = 200) -> Dict:
 
     Args:
         response_dict (Dict): Dictionary that contains the response's details.
-        status_code (int, optional): HTTP status code. Defaults to 200 - success.
+        status_code (int): HTTP status code. Defaults to 200 - success.
 
     Returns:
         Dict: Dictionary formatted as an HTTP Lambda response object with CORS headers.
@@ -62,7 +61,7 @@ def url_extractor(url_response: str, url: str) -> Set[str]:
     Extract all valid url addresses from an HTML source.
 
     Args:
-        url_response (str): The HTML content to extract emails from.
+        url_response (str): The HTML content to extract Urls from.
         url (str): The URL to be used as the base for the search and extraction process.
 
     Returns:
@@ -92,13 +91,13 @@ async def web_scanner(url: str, session: ClientSession, num_of_round: int) -> Di
     Args:
         url (str): The base URL for the search and extraction process.
         session (ClientSession): A shared HTTP client session used for making requests efficiently across multiple scans.
-        num_of_round (int): The current round number of the scan.
+        num_of_round (int): The current round number of the scan - can be 1 or 2.
 
     Returns:
         Dict[str, Set[str]]: A dictionary containing sets of unique and valid URLs and email addresses found.
     """
     urls = set()
-    async with session.get(url) as response: ##########לוודא עם בובי שהבנתי###########################################
+    async with session.get(url) as response: #########מרגיש כמו טעות###########################################
         response = await response.text()
     # get the source code.
     emails = email_extractor(response)
@@ -140,7 +139,7 @@ def cache_emails(scan_results: List[Dict]) -> None:
                 })
 
 
-def get_cache(urls: Set[str]) -> Dict: #TODO: need to be fixed!
+def get_cache(urls: Set[str]) -> Dict: #TODO: need to be fixed! because caching only the main url now.
     results = {}
     urls = list(urls)
     for i in range(0, len(urls), 100):
@@ -172,13 +171,12 @@ async def controller(url: str, session: ClientSession, response_dynamo, num_of_r
 
     Args:
         url (str): The base URL for the search and extraction process.
-        session (ClientSession): A shared HTTP client session used for making requests efficiently across multiple scans.
+        session (ClientSession): A shared HTTP client session for multiple scans.
         response_dynamo (dict): A dictionary containing cached results for previously scanned URLs.
         num_of_round (int): The current scan round number, used to determine retry logic.
     
     Returns:
-        Dict: A dictionary containing the URL, email addresses, and paths. If the scan fails during the second round, 
-        an empty dictionary is returned.
+        Dict: A dictionary containing the URL, email addresses, and paths.
 
     Raises:
         TimeoutError: Raised if a timeout occurs during the first round of scanning.
@@ -187,7 +185,7 @@ async def controller(url: str, session: ClientSession, response_dynamo, num_of_r
         if url not in response_dynamo:
             # If the URL is not found in the cache, perform a scan using the web_scanner function
             # and save the scanned data in the database.
-            result = await web_scanner(url, session, num_of_round)
+            result = await web_scanner(url, session, num_of_round) ##########why await
 
         else:
             # If the URL is already scanned and cached, retrieve the data from the cache.
@@ -230,7 +228,7 @@ async def main(event, context) -> Dict[str, Any]:
             return lambda_response({"error": "Invalid URL"}, 500)
         dynamodb_response = get_cache(set(url))
         timeout = ClientTimeout(10)
-        async with ClientSession(timeout=timeout) as session:
+        async with ClientSession(timeout=timeout) as session: ############
             try:
                 result = await controller(url, session, dynamodb_response, 1)
             except TimeoutError:
