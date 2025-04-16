@@ -62,7 +62,7 @@ def url_extractor(url_response: str, url: str) -> Set[str]:
 
     Args:
         url_response (str): The HTML content to extract Urls from.
-        url (str): The URL to be used as the base for the search and extraction process.
+        url (str): The base URL for the search and extraction process.
 
     Returns:
         Set[str]: A set of unique and valid url addresses that was found.
@@ -77,7 +77,7 @@ def url_extractor(url_response: str, url: str) -> Set[str]:
         if validators.url(extracted_url) and urlparse(extracted_url).netloc == domain:
             if extracted_url != url and extracted_url != url + "/" and \
             "#" not in extracted_url and extracted_url not in urls:
-                #The check for "#" not in extracted_url is included because URLs containing the # character are often reference a specific section within the same page, rather than a separate page.
+                #The check for "#" is included because URLs containing the # character are often reference a specific section within the same page, rather than a separate page.
                 urls.add(extracted_url)
         # Ensures that the links added valid and belong to the same domain as the given URL.  
         # Ensures that the links added are uniqe.
@@ -126,7 +126,7 @@ def cache_emails(scan_results: List[Dict]) -> None:
         with table.batch_writer() as batch:
             for result in chunk:
                 url = result['url']
-                if url in urls: # if there is already the same url # TODO: check if needed.
+                if url in urls: # if there is already the same url
                     continue
                 urls.append(url)
                 email_list = result["emails"]
@@ -157,7 +157,7 @@ def get_cache(urls: Set[str]) -> Dict:
                 }
             }
         )
-        found_items = response.get('Responses', {}).get('Domain-to-emails', [])
+        found_items = response.get('Responses', {}).get('Domain-to-emails', []) ###
         results.update({item['URL']: item for item in found_items})
     return results
 
