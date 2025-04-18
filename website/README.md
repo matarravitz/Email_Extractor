@@ -1,6 +1,10 @@
-![](Images/Email_Extractor.png)  
+<p align="center">
+  <img src="Images/Email_Extractor.png" width="400"/>
+</p>
 
-Email Extractor is a web-based tool that extracts email addresses from a given URL.  
+<p align="center">
+  <b>Email Extractor</b> is a web-based tool that extracts email addresses from a given URL.
+</p> 
 
 ## 📋 Usage 
 
