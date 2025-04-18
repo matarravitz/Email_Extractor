@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="Images/Email_Extractor.png" width="400"/>
+  <img src="website/Images/Email_Extractor.png" width="400"/>
 </p>
 
 <p align="center">
