@@ -8,30 +8,28 @@
 
 ## 📋 Usage 
 
-1. Go to the deployed website.
-2. Log in securely via AWS Cognito.
+1. Go to https://emailextractorbucket.s3.eu-north-1.amazonaws.com/index.html
+2. Log in with the credentials from the resume.
 3. Enter any URL you want to scan.
-4. The tool will extract all visible email addresses from the page and display them.
-5. Previous results are cached using DynamoDB to improve performance on repeated scans.
 
 ## 💼 What I Built  
-This project demonstrates a complete serverless application on AWS. Key components include:
+This project demonstrates a serverless application on AWS. Key components include:
 
 - 🔐 **Authentication**: Implemented secure user login with AWS Cognito.
 - 🌐 **Hosting**: Deployed a static site on S3 with public access configuration.
-- ⚙️ **Backend Logic**: Built a Python Lambda function triggered by API Gateway to parse the HTML content from a given URL and extract email addresses.
-- 🧠 **Caching**: Integrated DynamoDB to store and reuse results for repeated queries.
-- 🧪 **Error Handling**: Handled edge cases like invalid URLs, pages without emails, and duplicate results.  
+- ⚙️ **Backend Logic**: Built a Python Lambda function triggered by API Gateway to parse the HTML content from a given URL and extract email addresses recursively (up to two layers).
+- 💾 **Caching**: Integrated DynamoDB to store and reuse results for repeated queries.
+- ❗ **Error Handling**: Handled edge cases like invalid URLs, pages without emails, and duplicate results.  
 
 ## 🔄 Workflow  
 
 This project uses a GitHub Actions workflow to deploy updates automatically.
 
-- When code is pushed to the `main` branch, the updated Lambda function is automatically packaged and deployed to AWS using the AWS CLI.
+- When code is pushed to the `main` branch, the updated Lambda function is automatically packaged and deployed to AWS.
   
 ## 🌱 Reflection
 
-🌼 This project was my first attempt at building a full cloud-based application, and a valuable learning experience.
+🌼 This project was my first attempt at building a cloud-based application, and a valuable learning experience.
 It helped me understand the basics of serverless architecture and how different AWS services work together.
 I'm looking forward to learning more and exploring new technologies.
 
