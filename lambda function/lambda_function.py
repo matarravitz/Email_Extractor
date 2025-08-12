@@ -71,6 +71,7 @@ def url_extractor(url_response: str, url: str) -> Set[str]:
     soup = BeautifulSoup(url_response, "html.parser")
     links = soup.find_all('a', href=True) # finds all the lines in the HTML content that mark with <a> tag and not umpty.
     domain = urlparse(url).netloc # extracts the url's domain
+    links = links[:10]
     for link in links:
         href = link['href'] # extract the href attribute from an HTML tag.
         extracted_url = urljoin(url, href)
