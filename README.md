@@ -19,8 +19,9 @@ This project demonstrates a serverless application on AWS. Key components includ
 - 🌐 **Hosting**: Deployed a static site on S3 with public access configuration.
 - ⚙️ **Backend Logic**: Built a Python Lambda function triggered by API Gateway to parse the HTML content from a given URL and extract email addresses recursively (up to two layers).
 - 💾 **Caching**: Integrated DynamoDB to store and reuse results for repeated queries.
-- ❗ **Error Handling**: Handled edge cases like invalid URLs, pages without emails, and duplicate results.  
-
+- ❗ **Error Handling**: Handled edge cases like invalid URLs, pages without emails, and duplicate results.
+  
+![](email_extractor_flow.png)
 ## 🔄 Workflow  
 
 This project uses a GitHub Actions workflow to deploy updates automatically.
